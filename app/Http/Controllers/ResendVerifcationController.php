@@ -14,7 +14,6 @@ class ResendVerifcationController extends Controller
         $request->validate([
             'email' => 'required|email'
         ]);
-
         $user = User::where('email', $request->email)->first();
 
         if (!$user) {
@@ -28,7 +27,6 @@ class ResendVerifcationController extends Controller
                     'message' => 'Email is already verified.'
                 ], 200);
             }
-
             $signedUrl = URL::temporarySignedRoute(
                 'verification.verify',
                 now()->addMinutes(60),
@@ -37,7 +35,6 @@ class ResendVerifcationController extends Controller
                     'hash' => sha1($user->email)
                 ]
             );
-
             $user->notify(new VerifyEmailNotification($signedUrl));
 
             return response()->json([

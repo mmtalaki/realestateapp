@@ -7,9 +7,8 @@ use Illuminate\Http\Request;
 
 class RoleController extends Controller
 {
-    // Create Role
-    public function saveRole(Request $request)
-    {       
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => 'required|string',
             'slug' => 'required|string|unique:roles,slug'
@@ -22,8 +21,7 @@ class RoleController extends Controller
         try {
             $role->save();
             return response()->json($role);
-
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to create a role.",
@@ -32,14 +30,12 @@ class RoleController extends Controller
         }
     }
 
-    // Fetch all Roles
-    public function fetchRoles()
+    public function index()
     {
         try {
             $roles = Role::all();
             return response()->json($roles);
-
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to fetch roles.",
@@ -48,14 +44,12 @@ class RoleController extends Controller
         }
     }
 
-    // Fetch a specific Role
-    public function fetchRole($id)
+    public function show($id)
     {
         try {
             $role = Role::findOrFail($id);
             return response()->json($role);
-
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to fetch role.",
@@ -64,8 +58,7 @@ class RoleController extends Controller
         }
     }
 
-    // Update Role
-    public function updateRole($id, Request $request)
+    public function update($id, Request $request)
     {
         try {
             $role = Role::findOrFail($id);           
@@ -81,7 +74,7 @@ class RoleController extends Controller
 
             return response()->json($role);
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to update role.",
@@ -90,16 +83,14 @@ class RoleController extends Controller
         }
     }
 
-    // Delete Role
-    public function deleteRole($id)
-    {       
+    public function delete($id)
+    {
         try {
             $role = Role::findOrFail($id);
             $role->delete();
 
             return response()->json("Role Deleted Successfully");
-
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to delete role.",

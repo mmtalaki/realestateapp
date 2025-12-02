@@ -13,6 +13,23 @@ return new class extends Migration
     {
         Schema::create('properties', function (Blueprint $table) {
             $table->id();
+            $table->string("title");
+            $table->string("address");
+            $table->string("city");
+            $table->string("county");
+            $table->double("price");
+            $table->string("bedrooms");
+            $table->string("bathrooms");
+            $table->double("sq_meters");
+            $table->string("offer_type");
+            $table->string("property_type");
+            $table->string("status");
+            $table->string("favourite");
+
+            $table->unsignedBigInteger('user_id');
+
+            $table->foreign("user_id")->references('id')->on('users');
+
             $table->timestamps();
         });
     }

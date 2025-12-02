@@ -98,7 +98,7 @@ class UserController extends Controller
         $user->role_id = $request->role_id;
 
         if($request->hasFile('user_image')){
-            $fileName = $request->file('user_image')->store('posts', 'public');
+            $fileName = $request->file('user_image')->store('posts');
         }
         else{
             $fileName = null;

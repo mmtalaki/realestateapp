@@ -20,6 +20,6 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1
          ]);
 
-        $this->call(PropertySeeder::class);
+        $this->call(InquiriesSeeder::class);
     }
 }

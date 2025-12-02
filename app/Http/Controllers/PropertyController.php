@@ -8,8 +8,8 @@ use Illuminate\Http\Request;
 class PropertyController extends Controller
 {
     // Create Property
-    public function saveProperty(Request $request)
-    {       
+    public function store(Request $request)
+    {
         $request->validate([
             'title'=>'required|string',
             'address'=>'required|string',
@@ -19,29 +19,33 @@ class PropertyController extends Controller
             'bedrooms'=>'required|string',
             'bathrooms'=>'required|string',
             'sq_meters'=>'required|double',
-            'type' => 'required|string',
+            'offer_type' => 'required|string',
+            'property_type' => 'required|string',
             'status'=>'required|string',
-            'user_id'=>'required|integer|exists:users,id',
+            'favourite'=>'required|boolean',
+            'user_id'=>'required|integer|exists:users,id'
         ]);
 
-            $property = new Property();
-            $property->title = $request->title;
-            $property->address = $request->address;
-            $property->city = $request->city;
-            $property->county = $request->county;
-            $property->price = $request->price;
-            $property->bedrooms = $request->bedrooms;
-            $property->bathrooms = $request->bathrooms;
-            $property->sq_meters = $request->sq_meters;
-            $property->type = $request->type;
-            $property->status = $request->status;
-            $property->user_id = $request->user_id;
+        $property = new Property();
+        $property->title = $request->title;
+        $property->address = $request->address;
+        $property->city = $request->city;
+        $property->county = $request->county;
+        $property->price = $request->price;
+        $property->bedrooms = $request->bedrooms;
+        $property->bathrooms = $request->bathrooms;
+        $property->sq_meters = $request->sq_meters;
+        $property->offer_type = $request->offer_type;
+        $property->property_type = $request->property_type;
+        $property->status = $request->status;
+        $property->favourite = $request->favourite;
+        $property->user_id = $request->user_id;
 
         try {
             $property->save();
             return response()->json($property);
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to create a property.",
@@ -51,13 +55,13 @@ class PropertyController extends Controller
     }
 
     // Fetch all Property
-    public function fetchAllProperty()
+    public function index()
     {
         try {
             $property = Property::all();
             return response()->json($property);
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to fetch all property.",
@@ -67,13 +71,13 @@ class PropertyController extends Controller
     }
 
     // Fetch a specific Property
-    public function fetchProperty($id)
+    public function show($id)
     {
         try {
             $property = Property::findOrFail($id);
             return response()->json($property);
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to fetch property.",
@@ -83,7 +87,7 @@ class PropertyController extends Controller
     }
 
     // Update Property
-    public function updateProperty($id, Request $request)
+    public function update($id, Request $request)
     {
         try {
             $property = Property::findOrFail($id);           
@@ -97,8 +101,10 @@ class PropertyController extends Controller
                 'bedrooms'=>'required|string',
                 'bathrooms'=>'required|string',
                 'sq_meters'=>'required|double',
-                'type' => 'required|string',
+                'offer_type' => 'required|string',
+                'property_type' => 'required|string',
                 'status'=>'required|string',
+                'favourite'=>'required|boolean',
                 'user_id'=>'required|integer|exists:users,id'
             ]);
 
@@ -110,14 +116,16 @@ class PropertyController extends Controller
             $property->bedrooms = $request->bedrooms;
             $property->bathrooms = $request->bathrooms;
             $property->sq_meters = $request->sq_meters;
-            $property->type = $request->type;
+            $property->offer_type = $request->offer_type;
+            $property->property_type = $request->property_type;
             $property->status = $request->status;
+            $property->favourite = $request->favourite;
             $property->user_id = $request->user_id;
             $property->save();
 
             return response()->json($property);
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to update property.",
@@ -127,8 +135,8 @@ class PropertyController extends Controller
     }
 
     // Delete Property
-    public function deleteProperty($id)
-    {       
+    public function delete($id)
+    {
         try {
             $property = Property::findOrFail($id);
             $property->delete();

@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ImageController;
+use App\Http\Controllers\InquiriesController;
 use App\Http\Controllers\PropertyController;
 use App\Http\Controllers\ResendVerificationController;
 use App\Http\Controllers\RoleController;
@@ -11,7 +13,7 @@ use Illuminate\Support\Facades\Route;
 // Public Routes
 Route::post('register', [AuthController::class, 'register']);
 Route::post('login', [AuthController::class, 'login']);
-Route::get('getRoles', [RoleController::class, 'fetchRoles']);
+Route::get('getRoles', [RoleController::class, 'index']);
 
 // Email Verification
 Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
@@ -33,14 +35,24 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/updateUser/{id}', [UserController::class, 'update']);
     Route::post('/deleteUser/{id}', [UserController::class, 'delete']);
 
-    Route::post('createRole', [RoleController::class, 'saveRole']);
-    Route::get('getRole/{id}', [RoleController::class, 'fetchRole']);
-    Route::put('updateRole/{id}', [RoleController::class, 'updateRole']);
-    Route::delete('deleteRole/{id}', [RoleController::class, 'deleteRole']);
+    Route::post('createRole', [RoleController::class, 'store']);
+    Route::get('getRole/{id}', [RoleController::class, 'show']);
+    Route::put('updateRole/{id}', [RoleController::class, 'update']);
+    Route::delete('deleteRole/{id}', [RoleController::class, 'delete']);
 
     Route::post('/saveProperty', [PropertyController::class, 'store']);
     Route::get('/getProperty', [PropertyController::class, 'index']);
     Route::post('/getProperty/{id}', [PropertyController::class, 'show']);
     Route::post('/updateProperty/{id}', [PropertyController::class, 'update']);
     Route::post('/deleteProperty/{id}', [PropertyController::class, 'delete']);
+
+    Route::post('createInquiry', [InquiriesController::class, 'store']);
+    Route::get('getInquiries/{id}', [InquiriesController::class, 'index']);
+    Route::put('updateInquiry/{id}', [InquiriesController::class, 'update']);
+    Route::delete('deleteInquiry/{id}', [InquiriesController::class, 'delete']);
+
+    Route::post('createImage', [ImageController::class, 'store']);
+    Route::get('getImages', [ImageController::class, 'index']);
+    Route::put('updateImage/{id}', [ImageController::class, 'update']);
+    Route::delete('deleteImage/{id}', [ImageController::class, 'delete']);
 });
