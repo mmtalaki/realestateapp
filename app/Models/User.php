@@ -52,15 +52,15 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->role->slug === "administrator";
     }
 
-    public function isUser(){
+    public function isBuyer(){
         return $this->role->slug === "buyer";
     }
 
-    public function isEditor(){
+    public function isSeller(){
         return $this->role->slug === "seller";
     }
 
-    public function isCustomer(){
+    public function isAgent(){
         return $this->role->slug === "agent";
     }
 

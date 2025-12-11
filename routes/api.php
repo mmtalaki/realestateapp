@@ -11,7 +11,9 @@ use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 // Public Routes
-Route::post('register', [AuthController::class, 'register']);
+Route::post('registerBuyer', [AuthController::class, 'registerBuyer']);
+Route::post('registerSeller', [AuthController::class, 'registerSeller']);
+Route::post('registerAgent', [AuthController::class, 'registerAgent']);
 Route::post('login', [AuthController::class, 'login']);
 Route::get('getRoles', [RoleController::class, 'index']);
 
@@ -41,13 +43,13 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::delete('deleteRole/{id}', [RoleController::class, 'delete']);
 
     Route::post('/saveProperty', [PropertyController::class, 'store']);
-    Route::get('/getProperty', [PropertyController::class, 'index']);
+    Route::get('/getProperties', [PropertyController::class, 'index']);
     Route::post('/getProperty/{id}', [PropertyController::class, 'show']);
     Route::post('/updateProperty/{id}', [PropertyController::class, 'update']);
     Route::post('/deleteProperty/{id}', [PropertyController::class, 'delete']);
 
     Route::post('createInquiry', [InquiriesController::class, 'store']);
-    Route::get('getInquiries/{id}', [InquiriesController::class, 'index']);
+    Route::get('getInquiries', [InquiriesController::class, 'index']);
     Route::put('updateInquiry/{id}', [InquiriesController::class, 'update']);
     Route::delete('deleteInquiry/{id}', [InquiriesController::class, 'delete']);
 

@@ -12,9 +12,10 @@ class PropertyController extends Controller
     {
         $request->validate([
             'title'=>'required|string',
+            'description'=>'required|string|max:2000',
             'address'=>'required|string',
-            'city'=>'required',
-            'county'=>'required',
+            'city'=>'required|string',
+            'county'=>'required|string',
             'price'=>'required|double',
             'bedrooms'=>'required|string',
             'bathrooms'=>'required|string',
@@ -22,12 +23,15 @@ class PropertyController extends Controller
             'offer_type' => 'required|string',
             'property_type' => 'required|string',
             'status'=>'required|string',
-            'favourite'=>'required|boolean',
+            'year_built' =>'required|double',
+            'latitude' =>'required|double',
+            'longitude' =>'required|double',
             'user_id'=>'required|integer|exists:users,id'
         ]);
 
         $property = new Property();
         $property->title = $request->title;
+        $property->description = $request->description;
         $property->address = $request->address;
         $property->city = $request->city;
         $property->county = $request->county;
@@ -38,7 +42,9 @@ class PropertyController extends Controller
         $property->offer_type = $request->offer_type;
         $property->property_type = $request->property_type;
         $property->status = $request->status;
-        $property->favourite = $request->favourite;
+        $property->year_built = $request->year_built;
+        $property->latitude = $request->latitude;
+        $property->longitude = $request->longitude;
         $property->user_id = $request->user_id;
 
         try {
@@ -90,25 +96,29 @@ class PropertyController extends Controller
     public function update($id, Request $request)
     {
         try {
-            $property = Property::findOrFail($id);           
+            $property = Property::findOrFail($id);
 
             $request->validate([
                 'title'=>'required|string',
+                'description'=>'required|string|max:2000',
                 'address'=>'required|string',
-                'city'=>'required',
-                'county'=>'required',
+                'city'=>'required|string',
+                'county'=>'required|string',
                 'price'=>'required|double',
-                'bedrooms'=>'required|string',
-                'bathrooms'=>'required|string',
+                'bedrooms'=>'required|double',
+                'bathrooms'=>'required|double',
                 'sq_meters'=>'required|double',
                 'offer_type' => 'required|string',
                 'property_type' => 'required|string',
                 'status'=>'required|string',
-                'favourite'=>'required|boolean',
+                'year_built' =>'required|double',
+                'latitude' =>'required|double',
+                'longitude' =>'required|double',
                 'user_id'=>'required|integer|exists:users,id'
             ]);
 
             $property->title = $request->title;
+            $property->description = $request->description;
             $property->address = $request->address;
             $property->city = $request->city;
             $property->county = $request->county;
@@ -119,7 +129,9 @@ class PropertyController extends Controller
             $property->offer_type = $request->offer_type;
             $property->property_type = $request->property_type;
             $property->status = $request->status;
-            $property->favourite = $request->favourite;
+            $property->year_built = $request->year_built;
+            $property->latitude = $request->latitude;
+            $property->longitude = $request->longitude;
             $property->user_id = $request->user_id;
             $property->save();
 
@@ -143,7 +155,7 @@ class PropertyController extends Controller
 
             return response()->json("Property Deleted Successfully");
 
-        } 
+        }
         catch (\Exception $error) {
             return response()->json([
                 "Error" => "Failed to delete property.",

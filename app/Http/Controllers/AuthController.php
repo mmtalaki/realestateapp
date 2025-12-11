@@ -12,17 +12,93 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    public function register(Request $request)
+    public function registerBuyer(Request $request)
     {
         $validated = $request->validate([
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:5|confirmed'
         ]);
 
         $validated['password'] = Hash::make($validated['password']);
 
-        $role = Role::where('slug','user')->first()->id;
+        $role = Role::where('slug','buyer')->first()->id;
+        $validated['role_id'] = $role;
+
+        try {
+            $user = User::create($validated);
+
+            $signedUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                ['id'=>$user->id, 'hash'=>sha1($user->email)]
+            );
+
+            $user->notify(new VerifyEmailNotification($signedUrl));
+
+            return response()->json([
+                'message' => 'Registration Successful! A Verification Email Has been sent to You.',
+                'user' => $user,
+                'statusCode' => 201
+            ]);
+        }
+        catch (\Exception $exception) {
+            return response()->json([
+                'Error' => "Registration Failed!",
+                'Message' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    public function registerSeller(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:5|confirmed'
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $role = Role::where('slug','seller')->first()->id;
+        $validated['role_id'] = $role;
+
+        try {
+            $user = User::create($validated);
+
+            $signedUrl = URL::temporarySignedRoute(
+                'verification.verify',
+                now()->addMinutes(60),
+                ['id'=>$user->id, 'hash'=>sha1($user->email)]
+            );
+
+            $user->notify(new VerifyEmailNotification($signedUrl));
+
+            return response()->json([
+                'message' => 'Registration Successful! A Verification Email Has been sent to You.',
+                'user' => $user,
+                'statusCode' => 201
+            ]);
+        }
+        catch (\Exception $exception) {
+            return response()->json([
+                'Error' => "Registration Failed!",
+                'Message' => $exception->getMessage()
+            ], 500);
+        }
+    }
+
+    public function registerAgent(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => 'required|string',
+            'email' => 'required|string|email|unique:users',
+            'password' => 'required|string|min:5|confirmed'
+        ]);
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $role = Role::where('slug','agent')->first()->id;
         $validated['role_id'] = $role;
 
         try {

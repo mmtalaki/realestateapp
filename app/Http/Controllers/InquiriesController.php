@@ -12,7 +12,7 @@ class InquiriesController extends Controller
         $request->validate([
             'inquiry'=>'required|max:1000',
             'user_id' => 'required|integer|exists:users,id',
-            'property_id' => 'required|integer|exists:restaurants,id'
+            'property_id' => 'required|integer|exists:property,id'
         ]);
 
         $inquiries = new Inquiries();
@@ -44,7 +44,8 @@ class InquiriesController extends Controller
                 return response()->json([
                     'Inquiries' => $inquiries
                 ], 200);
-            } else {
+            }
+            else {
                 return "No inquiries were found.";
             }
         }
@@ -61,7 +62,7 @@ class InquiriesController extends Controller
         $request->validate([
             'inquiry'=>'required|max:1000',
             'user_id' => 'required|integer|exists:users,id',
-            'property_id' => 'required|integer|exists:restaurants,id'
+            'property_id' => 'required|integer|exists:property,id'
         ]);
 
         $inquiries = Inquiries::findOrFail($id);

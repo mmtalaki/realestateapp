@@ -20,6 +20,5 @@ class DatabaseSeeder extends Seeder
             'role_id' => 1
          ]);
 
-        $this->call(InquiriesSeeder::class);
     }
 }

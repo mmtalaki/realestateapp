@@ -11,7 +11,7 @@ class ImageController extends Controller
     public function store(Request $request){
         $request->validate([
             'property_image' => 'nullable|mimes:jpeg,png,jpg|max:2048',
-            'property_id' => 'required|integer|exists:restaurants,id'
+            'property_id' => 'required|integer|exists:property,id'
         ]);
 
         $image = new Image();
@@ -19,7 +19,8 @@ class ImageController extends Controller
         
         if($request->hasFile('property_image')){
             $fileName = $request->file('property_image')->store('images');
-        } else{
+        }
+        else{
             $fileName = null;
         }
         $image->property_image = $fileName;
@@ -48,7 +49,8 @@ class ImageController extends Controller
                 return response()->json([
                     'Image' => $image
                 ], 200);
-            } else {
+            }
+            else {
                 return "No image was found.";
             }
         }
@@ -64,7 +66,7 @@ class ImageController extends Controller
     {
         $request->validate([
             'property_image' => 'nullable|mimes:jpeg,png,jpg|max:2048',
-            'property_id' => 'required|integer|exists:restaurants,id'
+            'property_id' => 'required|integer|exists:property,id'
         ]);
 
         $image = Image::findOrFail($id);
@@ -93,7 +95,7 @@ class ImageController extends Controller
                 return response()->json([
                     'Image Deleted Successsfully!'
                 ], 200);
-            } 
+            }
             catch (\Exception $exception) {
                 return response()->json([
                     'error' => $exception->getMessage(),
